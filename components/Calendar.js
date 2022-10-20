@@ -1,8 +1,8 @@
 import { dateToMonthArray } from "../lib/calendar";
 
-function Calendar({ events }) {
+function Calendar({ date, events }) {
   events = JSON.parse(events);
-  let dateArr = dateToMonthArray(new Date());
+  let dateArr = dateToMonthArray(date);
   return (
     <>
       <div className="grid grid-cols-7 border-t border-l font-bold text-sm text-indigo-900 bg-indigo-50">
