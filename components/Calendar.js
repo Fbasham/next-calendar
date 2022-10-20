@@ -33,7 +33,7 @@ function Calendar({ events }) {
           NEXT
         </button>
         <span className="text-lg font-bold">
-          {date.toUTCString().slice(8, 16)}
+          {date.toLocaleString("default", { month: "long", year: "numeric" })}
         </span>
         <button
           value={0}
@@ -106,13 +106,13 @@ function Calendar({ events }) {
                     : "text-center min-h-full py-1"
                 }
               >
-                {events
-                  .filter((e) => new Date(e.date).getTime() === day.getTime())
-                  .map((e) => (
-                    <ul>
-                      <li>{e.event}</li>
-                    </ul>
-                  ))}
+                <ul>
+                  {events
+                    .filter((e) => new Date(e.date).getTime() === day.getTime())
+                    .map((e, i) => (
+                      <li key={i}>{e.event}</li>
+                    ))}
+                </ul>
               </div>
             )}
           </div>
