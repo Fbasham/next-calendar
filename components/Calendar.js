@@ -1,10 +1,59 @@
+import { useState } from "react";
 import { dateToMonthArray } from "../lib/calendar";
 
-function Calendar({ date, events }) {
-  events = JSON.parse(events);
+function Calendar({ events }) {
+  const [date, setDate] = useState(new Date());
+  const [view, setView] = useState(0);
+
+  if (!Array.isArray(events)) events = JSON.parse(events);
   let dateArr = dateToMonthArray(date);
+
+  function handleViewClick(e) {
+    if (e.target.value != view) setView(view ^ 1);
+  }
+
+  function handleChangeMonth(k) {
+    let newDate = new Date(date);
+    newDate.setMonth(date.getMonth() + k);
+    setDate(newDate);
+  }
   return (
     <>
+      <div className="flex gap-1 text-sm items-baseline text-indigo-900 mb-2">
+        <button
+          className="border border-indigo-500 hover:bg-indigo-200 rounded px-1"
+          onClick={() => handleChangeMonth(-1)}
+        >
+          PREV
+        </button>
+        <button
+          className="border border-indigo-500 hover:bg-indigo-200 rounded px-1 mr-2"
+          onClick={() => handleChangeMonth(1)}
+        >
+          NEXT
+        </button>
+        <span className="text-lg font-bold">
+          {date.toUTCString().slice(8, 16)}
+        </span>
+        <button
+          value={0}
+          className={`border border-indigo-500 hover:bg-indigo-200 rounded px-1 ml-auto ${
+            view == 0 ? "bg-indigo-700 text-white" : ""
+          }`}
+          onClick={handleViewClick}
+        >
+          CALENDAR
+        </button>
+        <button
+          value={1}
+          className={`border border-indigo-500 hover:bg-indigo-200 rounded px-1 ${
+            view == 1 ? "bg-indigo-700 text-white" : ""
+          }`}
+          onClick={handleViewClick}
+        >
+          LIST
+        </button>
+      </div>
       <div className="grid grid-cols-7 border-t border-l font-bold text-sm text-indigo-900 bg-indigo-50">
         <div className="py-1 pl-2 border-r border-b">SUN</div>
         <div className="py-1 pl-2 border-r border-b">MON</div>
